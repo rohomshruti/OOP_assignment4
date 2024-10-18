@@ -1,0 +1,127 @@
+#include <iostream>
+using namespace std;
+
+class Person {
+public:
+    string name;
+    int id, age, mob_no;
+
+    void input() {
+        cout << "Enter Name, Age, Mobile No: ";
+        cin >> name >> age >> mob_no;
+    }
+};
+
+class Doctor : virtual public Person {
+public:
+    string specialization;
+
+    void accept() {
+        cout << "Enter name, age, mobile no, id, specialization of doctor: ";
+        cin >> name >> age >> mob_no >> id >> specialization;
+    }
+
+    void display() {
+        cout << "Name\t\tAge\tMobile No\tID\tSpecialization\n";
+        cout << name << "\t\t" << age << "\t" << mob_no << "\t\t" << id << "\t" << specialization << endl;
+    }
+};
+
+class Nurse : virtual public Person {
+public:
+    string shift;
+
+    void accept() {
+        cout << "Enter name, age, mobile no, id, shift of nurse: ";
+        cin >> name >> age >> mob_no >> id >> shift;
+    }
+
+    void display() {
+        cout << "Name\t\tAge\tMobile No\tID\tShift\n";
+        cout << name << "\t\t" << age << "\t" << mob_no << "\t\t" << id << "\t" << shift << endl;
+    }
+};
+
+class Admin : public Person {
+public:
+    void search(Doctor doctors[], int numDoctors) {
+        string n;
+        int lic;
+        cout << "Enter name and licence_no you want to search: ";
+        cin >> n >> lic;
+
+        bool found = false;
+        for (int i = 0; i < numDoctors; i++) {
+            if (doctors[i].name == n && doctors[i].id == lic) {
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            cout << "Yes\n";
+        } else {
+            cout << "No\n";
+        }
+    }
+};
+
+int main() {
+    const int MAX_DOCTORS = 10;
+    const int MAX_NURSES = 10;
+
+    Doctor doctors[MAX_DOCTORS];
+    Nurse nurses[MAX_NURSES];
+    Admin admin;
+
+    int doctorCount = 0;
+    int nurseCount = 0;
+    int ch;
+
+    do {
+        cout << "\nEnter your choice:";
+        cout << "\n1. Insert doctor details";
+        cout << "\n2. Insert nurse details";
+        cout << "\n3. Search doctor details";
+        cout << "\n4. Display all details";
+        cout << "\n5. Exit\n";
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                if (doctorCount < MAX_DOCTORS) {
+                    doctors[doctorCount].accept();
+                    doctorCount++;
+                } else {
+                    cout << "Doctor list is full.\n";
+                }
+                break;
+            case 2:
+                if (nurseCount < MAX_NURSES) {
+                    nurses[nurseCount].accept();
+                    nurseCount++;
+                } else {
+                    cout << "Nurse list is full.\n";
+                }
+                break;
+            case 3:
+                admin.search(doctors, doctorCount);
+                break;
+            case 4:
+                for (int i = 0; i < doctorCount; i++) {
+                    doctors[i].display();
+                }
+                for (int i = 0; i < nurseCount; i++) {
+                    nurses[i].display();
+                }
+                break;
+            case 5:
+                cout << "\nExiting....!\n";
+                break;
+            default:
+                cout << "\nInvalid choice! Please try again.\n";
+                break;
+        }
+    } while (ch != 5);
+
+    return 0;
+}
